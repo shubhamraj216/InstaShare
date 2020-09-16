@@ -1,0 +1,27 @@
+#upload-dialog {
+  display: block;
+  color: white;
+  background: grey;
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  text-align: center;
+  padding: 15px;
+}
+
+#preview-image {
+  display: flex;
+  width: 20em;
+  height: 20em;
+}
+
+#remove-image {
+  display: block;
+  color: white;
+  background: grey;
+  width: 150px;
+  height: 70px;
+  cursor: pointer;
+  text-align: center;
+  padding: 15px;
+}

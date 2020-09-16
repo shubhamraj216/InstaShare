@@ -1,0 +1,17 @@
+<%- include ("../partials/header") %>
+
+<h1>POST A NEW PIC!</h1>
+
+<form action = "/image/show" method = "POST" enctype="multipart/form-data">
+  <p id = "upload-dialog">Choose Image</p>
+
+  <input type = "file" id = "image-file" name = "img" accept = "image/jpg, image/png" style = "display: none" />
+
+  <img id = "preview-image" style = "display: none" />
+  <p id = "remove-image" style = "display: none">Choose different pic</p>
+  
+  <input type = "text" name = "caption" placeholder = "Caption" style = "display: block">
+  <input type = "submit">
+</form>
+
+<%- include ("../partials/footer") %>

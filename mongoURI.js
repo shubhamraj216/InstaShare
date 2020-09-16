@@ -1,0 +1,1 @@
+module.exports = "mongodb+srv://vegito123:vegito123@mcluster.kttiw.mongodb.net/instashare?retryWrites=true&w=majority";
