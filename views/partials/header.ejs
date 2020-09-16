@@ -13,5 +13,16 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">I-Share</a>
                 </div>
+                <div class="collapse navbar-collapse">
+                  <div class="nav navbar-nav navbar-right">
+                      <%if(!currentUser){%>
+                          <li><a href="/login">Login</a></li>
+                          <li><a href="/register">SignUp</a></li>
+                      <%}else{%>
+                          <li><a href="#">Signed in as <%=currentUser.username %></a></li>
+                          <li><a href="/logout">LogOut</a></li>
+                      <%}%>
+                  </div>
+              </div>
             </div>
         </nav>

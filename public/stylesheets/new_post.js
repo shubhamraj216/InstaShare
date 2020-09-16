@@ -32,7 +32,7 @@ document.querySelector("#image-file").addEventListener('change', function() {
   _PREVIEW_URL = URL.createObjectURL(file);
 
   document.querySelector("#preview-image").setAttribute('src', _PREVIEW_URL);
-  document.querySelector("#preview-image").style.display = 'inline-block';
+  document.querySelector("#preview-image").style.display = 'block';
 
-  document.querySelector("#remove-image").style.display = 'inline-block';
+  document.querySelector("#remove-image").style.display = 'block';
 });

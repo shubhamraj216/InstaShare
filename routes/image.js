@@ -11,7 +11,8 @@ const express       = require("express"),
 express().use(bodyParser.json());
 const mongoURI = require("../mongoURI");
 
-var Photo = require("../models/photo");
+var Photo = require("../models/photo"),
+    middleware = require("../authMiddleware/auth");
 
 const storage = new GridFsStorage({
   url: mongoURI,
@@ -37,19 +38,19 @@ const upload = multer({storage});
 
 
 
-router.get("/new", function(req, res) {
+router.get("/new", middleware.isLoggedIn, function(req, res) {
   let gfs = req.image_config.gfs;
   res.render("photos/new");
 });
 
-router.get("/show", function(req, res) {
+router.get("/index", function(req, res) {
   Photo.find({}, function(err, data) {
     if(err) console.log("Error: " + err);
     else {
       data.sort((a, b) => {
         return (b.createdAt - a.createdAt);
       });
-      res.render("photos/show", {
+      res.render("photos/index", {
         files: data
       });
     };
@@ -57,20 +58,32 @@ router.get("/show", function(req, res) {
 
 });
 
-router.post("/show", upload.single("img"), function(req, res) {
-  Photo.create({
+router.post("/index", middleware.isLoggedIn, upload.single("img"), function(req, res) {
+  var obj = {
     caption: req.body.caption,
     fileName: req.file.filename,
-    fileId: req.file.id
-  }, function(err, photo) {
+    fileId: req.file.id,
+    author: {
+      id: req.user._id,
+      username: req.user.username
+    }
+  }
+  Photo.create(obj, function(err, photo) {
     if(err) console.log(err);
-    
-    else res.redirect("/image/show");
+  
+    else res.redirect("/image/index");
   });
 });
 
-router.get("/:id/edit", function(req,res){
-  Photo.findById(req.params.id,function(err, data) {
+router.get("/:id/show", function(req, res) {
+  Photo.findById(req.params.id).populate("comments").exec(function(err, data) {
+    if(err) console.log(err);
+    else res.render("photos/show", {file: data});
+  })
+})
+
+router.get("/:id/edit", middleware.isPhotoAuthorized, function(req,res){
+  Photo.findById(req.params.id, function(err, data) {
       if(err)
       console.log(err);
       else
@@ -78,18 +91,18 @@ router.get("/:id/edit", function(req,res){
   })
 })
 
-router.put("/:id", upload.single("img"), function(req,res){
+router.put("/:id", middleware.isPhotoAuthorized, upload.single("img"), function(req,res){
   Photo.findByIdAndUpdate(req.params.id, {
     caption: req.body.caption,
     fileName: req.file.filename,
     fileId: req.file.id
   }, function(err, updated){
     if(err) console.log(err);
-    else res.redirect("/image/show");
+    else res.redirect("/image/index");
   })
 })
 
-router.delete("/:id", function(req, res) {
+router.delete("/:id", middleware.isPhotoAuthorized, function(req, res) {
   let gfs = req.image_config.gfs;
   Photo.findById({_id: req.params.id}, (err, data) => {
     if(err) console.log(err);
@@ -98,7 +111,7 @@ router.delete("/:id", function(req, res) {
         if (err) return res.status(404).json({ err: err.message });
         Photo.findByIdAndRemove(req.params.id, function(err2) {
           if(err2) return res.status(404).json({ err: err2.message });
-          res.redirect("/image/show");
+          res.redirect("/image/index");
         })
       });
     }

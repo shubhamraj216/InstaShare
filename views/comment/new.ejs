@@ -1,0 +1,20 @@
+<%- include ("../partials/header") %>
+
+
+<div class="container">
+  <div class="row">
+    <div style="width:40%;margin:30px auto" >
+      <h1>POST A NEW COMMENT!</h1>
+      <form action="/image/<%= data %>/comments/" method="POST">
+        <div class="form-group">
+          <input type = "text" name = "comment" placeholder = "Comment" style = "display: block; width: 100%;" class="form-control">
+        </div> 
+        <div class="form-group">
+          <button class="btn btn-lg btn-primary btn default btn-block">Comment</button>
+        </div>  
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include ("../partials/footer") %>

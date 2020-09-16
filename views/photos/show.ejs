@@ -1,26 +1,61 @@
-<% if(files) { %>
-  <% files.forEach(function(file) {%>
-  <div class="card mb-3">
-    <div class="card-body">
-      
-        <img src="/image/<%= file.fileName %>" width="250" alt="" class="img-responsive">
-        
-        </div>
-        <div class="card-header">
-            <div class="card-title">
-                    <%= file.caption %>
-            </div>
-        </div>
-        <div>Uploaded on <%= file.createdAt.toLocaleString().split(' ').slice(0, 5).join(' ') %></div>
-      <div class="card-footer">
-          <form action="/image/<%= file._id %>?_method=DELETE" method="POST">
-            <button type="submit" class="btn btn-danger">Remove</button>
-          </form>
-          <a href="/image/<%=file._id%>/edit" class="btn btn-default btn-primary">Edit</a>
+<%- include ("../partials/header") %>
+
+<div class="col-md-9">
+  <h3><a class = "btn btn-primary" href = "/image/index">Go back!</a></h3>
+  <div class="thumbnail">
+    <img src="/image/<%= file.fileName %>" alt="" class="img-responsive">
+    
+    
+    <div class="card-header">
+      <div class="card-title">
+        <strong><%= file.author.username %></strong>  <%= file.caption %>
       </div>
-      <br>
+    </div>
+    <div>Uploaded on <%= file.createdAt.toLocaleString() %></div>
+    <br>
+    <% if(currentUser && file.author.id.equals(currentUser._id)) { %>
+    <div class = "row card-footer">
+      <a class = "btn btn-warning col-md-1" href="/image/<%=file._id%>/edit" class="btn btn-default btn-primary">Edit</a>
+      <form action="/image/<%= file._id %>?_method=DELETE" method="POST" class="col-md-8">
+        <div> 
+          <button type="submit" class="btn btn-danger">Remove</button>
+        </div>
+      </form>
+    </div>
+    <% } %>
   </div>
+  <br>
+</div>
+
+
+<div class="col-md-3">
+
+  
+  <h3>Comments</h3>
+  <h4><a href = "/image/<%= file._id%>/comments/new">Make Comment</a></h4>
+  
+  <% file.comments.forEach(function(comment) {%>
+    <div><strong><%= comment.author.username %></strong> - <%= comment.text %>
+      <% if(comment.createdAt.toLocaleString() != comment.updatedAt.toLocaleString()) { %>
+        <strong>(Edited)</strong>
+      <% } %>
+    </div>
+
+    <% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+      <br>
+    <div class= "row">
+      <a class = "btn btn-warning col-md-3" href = "/image/<%= file._id%>/comments/<%= comment._id %>/edit">Edit</a>
+      <form action="/image/<%= file._id %>/comments/<%= comment._id %>?_method=DELETE" method = "POST">
+        <div>
+          <button type="submit" class="btn btn-danger">DELETE</button>
+
+        </div>
+      </form>
+
+    </div>
+    <% } %>
+    <hr>
   <%}) %>
-  <% } else { %>
-  <p>No files to show</p>
-  <% } %>
+</div>
+
+<%- include ("../partials/footer") %>

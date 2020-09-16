@@ -1,0 +1,43 @@
+<%- include ("../partials/header") %>
+
+
+<div class="card mb-3 col-md-3">
+  
+  <h4><a href = "/image/new" class = "btn btn-default">Post Pic</a></h4>
+</div>
+
+<div class="card mb-3 col-md-6" >
+<% if(files) { %>
+  <% files.forEach(function(file) {%>
+    <div class="card-body">
+      <div style="text-align: center;">
+        <img src="/image/<%= file.fileName %>" alt="" class="img-responsive">
+
+      </div>
+        
+        </div>
+        <div class="card-header">
+            <div class="card-title">
+              <strong><%= file.author.username %></strong>  <%= file.caption %>
+            </div>
+        </div>
+        
+        <div>Uploaded on <%= file.createdAt.toLocaleString().split(' ').slice(0, 5).join(' ') %></div>
+
+
+      <div class="card-footer">
+        <a href="/image/<%=file._id%>/show" class="btn btn-default btn-primary">View</a>
+    </div>
+    <hr>  
+    <br>
+<%}) %>
+<% } else { %>
+<p>No files to show</p>
+<% } %>
+</div>
+
+<div class = "col-md-3">
+
+</div>
+
+<%- include ("../partials/footer") %>
