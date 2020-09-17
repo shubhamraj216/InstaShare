@@ -33,6 +33,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
         photo.save(function(err) {
           if(err) console.log(err);
         });
+        req.flash("success","Comment Added Succesfully");
         res.redirect(`/image/${req.params.id}/show`);
       })
     }
@@ -55,13 +56,17 @@ router.put("/:cid", middleware.isCommentAuthorized, function(req,res){
     text: req.body.comment,
   }, function(err, updated){
     if(err) console.log(err);
-    else res.redirect(`/image/${req.params.id}/show`);
+    else {
+      req.flash("success","Comment Updated Succesfully");
+      res.redirect(`/image/${req.params.id}/show`);
+    }
   })
 })
 
 router.delete("/:cid", middleware.isCommentAuthorized, function(req, res) {
   Comment.findByIdAndRemove(req.params.cid, function(err2) {
     if(err2) return res.status(404).json({ err: err2.message });
+    req.flash("success","Comment Deleted Succesfully");
     res.redirect(`/image/${req.params.id}/show`);
   })
 

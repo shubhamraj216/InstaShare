@@ -14,10 +14,12 @@ router.get("/register",function(req, res) {
 router.post("/register",function(req, res) {
     User.register({username: req.body.username}, req.body.password, function(err,user){
         if(err) {
+          req.flash("error", err.message);
           return res.redirect("/register");
         }
         else {
           passport.authenticate("local")(req,res,function(){
+            req.flash("success","Welcome to InstaShare " + user.username);
             res.redirect(req.session.returnTo || '/image/index');
             delete req.session.returnTo;
           })
@@ -39,28 +41,41 @@ router.get("/login",function(req, res) {
 
 router.post("/login", function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/login'); }
+    if (err) { 
+      req.flash("error", err);
+      return next(err);
+    }
+    if (!user) { 
+      req.flash("error", "No user found");
+      return res.redirect('/login');
+    }
     
     req.logIn(user, function(err) {
-      if (err) { return next(err); }
+      if (err) { 
+        req.flash("error", "Incorrect Username or Password");
+        return next(err);
+      }
 
       let success;
       if(req.session.returnTo) success = req.session.returnTo;
       else success = '/image/index';
+      req.flash("success", "Successfully Logged In");
       delete req.session.returnTo;
-
       return res.redirect(success);
     });
   })(req, res, next);
 })
 
 
-router.get("/logout",function(req, res) {
-  // req.logout();
-  req.session.destroy(function (err) {
-    res.redirect('/'); //Inside a callback… bulletproof!
+router.get("/logout", function(req, res) {
+  req.logout();
+  req.session.regenerate(function(err) {
+    req.flash("success","Logged you out");
+    res.redirect('/');
   });
+  // req.session.destroy(function (err) {
+  //   res.redirect('/'); //Inside a callback… bulletproof!
+  // });
 })
 
 

@@ -70,8 +70,10 @@ router.post("/index", middleware.isLoggedIn, upload.single("img"), function(req,
   }
   Photo.create(obj, function(err, photo) {
     if(err) console.log(err);
-  
-    else res.redirect("/image/index");
+    else {
+      req.flash("success","Image Added Succesfully");
+      res.redirect("/image/index");
+    }
   });
 });
 
@@ -98,7 +100,9 @@ router.put("/:id", middleware.isPhotoAuthorized, upload.single("img"), function(
     fileId: req.file.id
   }, function(err, updated){
     if(err) console.log(err);
-    else res.redirect("/image/index");
+    else {
+      req.flash("success","Image Added Succesfully");
+      res.redirect("/image/index");}
   })
 })
 
@@ -111,6 +115,7 @@ router.delete("/:id", middleware.isPhotoAuthorized, function(req, res) {
         if (err) return res.status(404).json({ err: err.message });
         Photo.findByIdAndRemove(req.params.id, function(err2) {
           if(err2) return res.status(404).json({ err: err2.message });
+          req.flash("success","Photo Deleted Succesfully");
           res.redirect("/image/index");
         })
       });
