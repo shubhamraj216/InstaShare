@@ -1,8 +1,63 @@
+body {
+  overflow: auto;
+}
+
 img {
   max-width: 100%;
   height: auto;
 }
 
-.row{
+ul {
+  list-style: none;
+}
+
+.row {
   margin: 0
+}
+
+.alert-container {
+  max-width: 50%;
+}
+
+.index-left {
+  height: 90vh;
+  overflow: hidden;
+}
+
+.index-center {
+  height: 90vh;
+  overflow-y: scroll;
+  align-items: center;
+}
+
+.index-right {
+  height: 90vh;
+}
+
+.chat-screen {
+  height: 85%;
+  overflow-y: scroll;
+}
+
+.chat-send {
+  justify-content: center;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 1px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }

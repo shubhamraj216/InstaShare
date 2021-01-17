@@ -12,11 +12,13 @@ const http           = require("http"),
       localstrategy  = require("passport-local"),
 passportlocalmongoose = require("passport-local-mongoose"),
       cookieParser   = require("cookie-parser"),
+      socketIO       = require("socket.io"),
       flash          = require("connect-flash");
 
 var imageRouter     = require("./routes/image"),
     commentRouter   = require("./routes/comment"),
     authRoutes      = require("./routes/auth");
+
 
 const hostname = "localhost",
       port = 3000;
@@ -105,3 +107,16 @@ const server = http.createServer(app);
 server.listen(port, hostname, () => {
   console.log(`Server is listening on http://${hostname}:${port}/`);
 });
+
+let io = socketIO(server);
+io.sockets.on('connection', socket => {
+  console.log('user connected!');
+
+  socket.on('chat', msg => {
+    socket.broadcast.emit('chat', msg);
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected!');
+  })
+})

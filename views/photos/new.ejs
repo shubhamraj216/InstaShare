@@ -10,7 +10,7 @@
           <div id = "upload-dialog" style="display: block; width: 100%;" class="form-control">Choose Image</div>
         </div> 
         <div class="form-group">
-          <input type = "file" id = "image-file" name = "img" accept = "image/jpg, image/png" style = "display: none" />
+          <input type = "file" id = "image-file" name = "img" accept = "image/jpg, image/png" style = "display: none" required />
         </div> 
         <div class="form-group">
           <img id = "preview-image" style = "display: none; width: 100%;" class="form-control" />
@@ -19,7 +19,7 @@
           <p id = "remove-image" style = "display: none; width: 100%;" class="form-control">Choose different pic</p>
         </div>  
         <div class="form-group">
-          <input type = "text" name = "caption" placeholder = "Caption" style = "display: block; width: 100%;" class="form-control">
+          <textarea type = "text" name = "caption" placeholder = "Caption" style = "display: block; width: 100%;" class="form-control"></textarea>
         </div>  
         <div class="form-group">
           <button class="btn btn-lg btn-primary btn default btn-block">POST</button>
@@ -28,5 +28,7 @@
     </div>
   </div>
 </div>
+<script src="/stylesheets/new_post.js"></script>
+
 
 <%- include ("../partials/footer") %>

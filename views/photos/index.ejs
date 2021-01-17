@@ -1,45 +1,61 @@
 <%- include ("../partials/header") %>
 
 
-<div class="card mb-3 col-md-3">
+<div class="card mb-3 col-md-3 index-left">
   <div class="card-header" style="text-align: center;">
     <strong>Got a pic to post</strong>
   </div>
   <h4><a href = "/image/new" class = "btn btn-default" style="width: 100%;">Post Pic</a></h4>
 </div>
 
-<div class="card mb-3 col-md-6" >
-<% if(files) { %>
-  <% files.forEach(function(file) {%>
-    <div class="card-body">
-      <div style="text-align: center;">
-        <img src="/image/<%= file.fileName %>" alt="" class="img-responsive">
-
-      </div>
-        
-        </div>
-        <div class="card-header">
-            <div class="card-title">
-              <strong><%= file.author.username %></strong>  <%= file.caption %>
-            </div>
-        </div>
-        
-        <div>Uploaded on <%= file.createdAt.toLocaleString().split(' ').slice(0, 5).join(' ') %></div>
-
-
-      <div class="card-footer">
-        <a href="/image/<%=file._id%>/show" class="btn btn-default btn-primary">View</a>
+<div class="card mb-3 col-md-6 scroll index-center">
+  <div class="container alert-container">
+    <% if(success&&success.length>0){ %>
+    <div class="alert alert-success" role="alert">
+      <%=success%>    
     </div>
-    <hr>  
-    <br>
-<%}) %>
-<% } else { %>
-<p>No files to show</p>
-<% } %>
+    <% } if(error&&error.length>0){ %>
+    <div class="alert alert-danger" role="alert">
+      <%=error%>    
+    </div>
+    <% } %>
+  </div>
+  <% if(files) { %>
+    <% files.forEach(function(file) {%>
+      <div class="card-body">
+        <div style="text-align: center;">
+          <img src="/image/<%= file.fileName %>" alt="" class="img-responsive">
+
+        </div>
+          
+          </div>
+          <div class="card-header">
+              <div class="card-title">
+                <strong><%= file.author.username %></strong>  <%= file.caption %>
+              </div>
+          </div>
+          
+          <div>Uploaded on <%= file.createdAt.toLocaleString().split(' ').slice(0, 5).join(' ') %></div>
+
+
+        <div class="card-footer">
+          <a href="/image/<%=file._id%>/show" class="btn btn-default btn-primary">View</a>
+      </div>
+      <hr>  
+      <br>
+  <%}) %>
+  <% } else { %>
+  <p>No files to show</p>
+  <% } %>
 </div>
 
-<div class = "col-md-3">
-
+<div class = "col-md-3 index-right">
+  <ul class="chat-screen scroll" id = "chat">
+  </ul>
+  <form onsubmit="return false" class="chat-send">
+    <input type="text" id="text" />
+    <button id="send">Send</button>
+  </form>
 </div>
 
 <%- include ("../partials/footer") %>

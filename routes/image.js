@@ -43,7 +43,7 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
   res.render("photos/new");
 });
 
-router.get("/index", function(req, res) {
+router.get("/index", middleware.isLoggedIn, function(req, res) {
   Photo.find({}, function(err, data) {
     if(err) console.log("Error: " + err);
     else {
@@ -77,7 +77,7 @@ router.post("/index", middleware.isLoggedIn, upload.single("img"), function(req,
   });
 });
 
-router.get("/:id/show", function(req, res) {
+router.get("/:id/show", middleware.isLoggedIn, function(req, res) {
   Photo.findById(req.params.id).populate("comments").exec(function(err, data) {
     if(err) console.log(err);
     else res.render("photos/show", {file: data});
@@ -123,7 +123,7 @@ router.delete("/:id", middleware.isPhotoAuthorized, function(req, res) {
   })
 })
 
-router.get("/:filename", (req, res) => {
+router.get("/:filename", middleware.isLoggedIn, (req, res) => {
   let gfs = req.image_config.gfs;
   const file = gfs
     .find({
